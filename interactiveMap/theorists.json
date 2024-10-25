@@ -7,16 +7,12 @@
             "birthYear": 1943,
             "place": "Pennsilvania, Estados Unidos",
             "img": "profilePictures/gardner.webp",
-            "lastName": "gardner"
-        },
-        {
-			"originalPlace": "United States of America",
-            "name": "Catherine Walsh",
-            "birth": "",
-            "birthYear": "undefined",
-            "place": "Estados Unidos",
-            "img": "profilePictures/walsh.webp",
-            "lastName": "walsh"
+            "lastName": "gardner",
+			"contextoHistorico": "Guerra Fría, auge de la psicología cognitiva",
+			"obraPrincipal": "Teoría de las inteligencias múltiples",
+			"educacionEpoca": "Tradicional, con énfasis en las habilidades lingüísticas y lógico-matemáticas",
+			"influencias": "Piaget, Guilford",
+			"aportesPedagogia": "Inteligencias múltiples, educación personalizada"
         },
         {
 			"originalPlace": "United States of America",
@@ -25,9 +21,30 @@
             "birthYear": 1915,
             "place": "Nueva York, Estados Unidos",
             "img": "profilePictures/bruner.webp",
-            "lastName": "bruner"
+            "lastName": "bruner",
+			"contextoHistorico": "Segunda Guerra Mundial, Guerra Fría, auge de la psicología cognitiva",
+			"obraPrincipal": "Teoría del aprendizaje por descubrimiento",
+			"educacionEpoca": "Tradicional, basada en la transmisión de conocimientos",
+			"influencias": "Dewey, Piaget",
+			"aportesPedagogia": "Aprendizaje significativo, descubrimiento, currículo en espiral"
         }
     ],
+	"Ecuador":[
+	{
+			"originalPlace": "Ecuador",
+	    "name": "Catherine Walsh",
+	    "birth": "",
+	    "birthYear": 1969,
+	    "place": "Estados Unidos, radicada en Ecuador",
+	    "img": "profilePictures/walsh.webp",
+	    "lastName": "walsh",
+			"contextoHistorico": "Dictaduras militares en América Latina, movimientos sociales, globalización",
+			"obraPrincipal": "Interculturalidad crítica, decolonialidad",
+			"educacionEpoca": "Modernización educativa, influencia de teorías críticas",
+			"influencias": "Quijano, Mignolo, Foucault",
+			"aportesPedagogia": "Pedagogía decolonial, estudios culturales latinoamericanos, crítica a la colonialidad del poder"
+	}
+	],
     "Italy": [
         {
 			"originalPlace": "Italy",
@@ -36,7 +53,12 @@
             "birthYear": 1870,
             "place": "Chiaravalle, Italia",
             "img": "profilePictures/montessori.webp",
-            "lastName": "montessori"
+            "lastName": "montessori",
+			"contextoHistorico": "Industrialización, feminismo, inicio psicología científica",
+			"obraPrincipal": "El Método Montessori",
+			"educacionEpoca": "Tradicional, basada en memorización y disciplina",
+			"influencias": "Rousseau, Pestalozzi",
+			"aportesPedagogia": "Aprendizaje activo, materiales manipulativos, educación sensorial"
         }
     ],
     "Colombia": [
@@ -47,7 +69,12 @@
             "birthYear": 2001,
             "place": "Popayán, Colombia",
             "img": "profilePictures/bravo.webp",
-            "lastName": "bravo"
+            "lastName": "bravo",
+			"contextoHistorico": "Inicio del tercer milenio",
+			"obraPrincipal": "La educación bailada",
+			"educacionEpoca": "Un desórden impresionante",
+			"influencias": "Aventura, Jhonny Rivera",
+			"aportesPedagogia": "Incalculables"
         }
     ],
     "Switzerland": [
@@ -58,7 +85,12 @@
             "birthYear": 1896,
             "place": "Neuchâtel, Suiza",
             "img": "profilePictures/piaget.webp",
-            "lastName": "piaget"
+            "lastName": "piaget",
+			"contextoHistorico": "Dos Guerras Mundiales, desarrollo de la psicología",
+			"obraPrincipal": "Teoría de las etapas del desarrollo cognitivo",
+			"educacionEpoca": "Tradicional, enfocada en la disciplina",
+			"influencias": "Kant, Darwin",
+			"aportesPedagogia": "Epistemología genética, construcción del conocimiento"
         }
     ],
     "Belarus": [
@@ -69,7 +101,12 @@
             "birthYear": 1896,
             "place": "Orsha, Imperio ruso (actual Bielorrusia)",
             "img": "profilePictures/vygotsky.webp",
-            "lastName": "vygotsky"
+            "lastName": "vygotsky",
+			"contextoHistorico": "Revolución Rusa, desarrollo de la psicología soviética",
+			"obraPrincipal": "Teoría sociocultural del desarrollo cognitivo",
+			"educacionEpoca": "Tradicional, enfocada en la disciplina",
+			"influencias": "Marx, Engels",
+			"aportesPedagogia": "Zona de desarrollo próximo, importancia del lenguaje y la interacción social"
         }
     ],
     "Brazil": [
@@ -80,7 +117,12 @@
             "birthYear": 1921,
             "place": "Recife, Brasil",
             "img": "profilePictures/freire.webp",
-            "lastName": "freire"
+            "lastName": "freire",
+			"contextoHistorico": "Dictadura militar en Brasil, movimientos sociales",
+			"obraPrincipal": "Pedagogía del oprimido",
+			"educacionEpoca": "Tradicional, bancaria",
+			"influencias": "Marx, Sartre",
+			"aportesPedagogia": "Educación liberadora, alfabetización, conciencia crítica"
         }
     ]
 }
