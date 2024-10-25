@@ -1,0 +1,86 @@
+{
+    "United States of America": [
+        {
+			"originalPlace": "United States of America",
+            "name": "Howard Gardner",
+            "birth": "11 de julio de 1943",
+            "birthYear": 1943,
+            "place": "Pennsilvania, Estados Unidos",
+            "img": "profilePictures/gardner.webp",
+            "lastName": "gardner"
+        },
+        {
+			"originalPlace": "United States of America",
+            "name": "Catherine Walsh",
+            "birth": "",
+            "birthYear": "undefined",
+            "place": "Estados Unidos",
+            "img": "profilePictures/walsh.webp",
+            "lastName": "walsh"
+        },
+        {
+			"originalPlace": "United States of America",
+            "name": "Jerome Bruner",
+            "birth": "1 de octubre de 1915",
+            "birthYear": 1915,
+            "place": "Nueva York, Estados Unidos",
+            "img": "profilePictures/bruner.webp",
+            "lastName": "bruner"
+        }
+    ],
+    "Italy": [
+        {
+			"originalPlace": "Italy",
+            "name": "Maria Montessori",
+            "birth": "31 de agosto de 1870",
+            "birthYear": 1870,
+            "place": "Chiaravalle, Italia",
+            "img": "profilePictures/montessori.webp",
+            "lastName": "montessori"
+        }
+    ],
+    "Colombia": [
+        {
+			"originalPlace": "Colombia",
+            "name": "Catalina Bravo",
+            "birth": "19 de diciembre de 2001",
+            "birthYear": 2001,
+            "place": "Popayán, Colombia",
+            "img": "profilePictures/bravo.webp",
+            "lastName": "bravo"
+        }
+    ],
+    "Switzerland": [
+        {
+			"originalPlace": "Switzerland",
+            "name": "Jean Piaget",
+            "birth": "9 de agosto de 1896",
+            "birthYear": 1896,
+            "place": "Neuchâtel, Suiza",
+            "img": "profilePictures/piaget.webp",
+            "lastName": "piaget"
+        }
+    ],
+    "Belarus": [
+        {
+			"originalPlace": "Belarus",
+            "name": "Lev Vygotsky",
+            "birth": "17 de noviembre de 1896",
+            "birthYear": 1896,
+            "place": "Orsha, Imperio ruso (actual Bielorrusia)",
+            "img": "profilePictures/vygotsky.webp",
+            "lastName": "vygotsky"
+        }
+    ],
+    "Brazil": [
+        {
+			"originalPlace": "Brazil",
+            "name": "Paulo Freire",
+            "birth": "19 de septiembre de 1921",
+            "birthYear": 1921,
+            "place": "Recife, Brasil",
+            "img": "profilePictures/freire.webp",
+            "lastName": "freire"
+        }
+    ]
+}

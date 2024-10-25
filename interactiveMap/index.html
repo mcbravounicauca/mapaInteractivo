@@ -29,7 +29,6 @@
             cursor: pointer;
         }
 
-
         .active {
             stroke: #ff0000;
             stroke-width: 2px;
@@ -85,27 +84,60 @@
             position: relative;
             width: 100%;
             height: auto;
+            max-width: 960px;
+            /* Match the map width */
+            margin: 0 auto;
+            /* Center the container */
+            padding: 0 20px;
+            /* Add some breathing room */
         }
 
-        /* Timeline Slider Styling */
+        /* Timeline Container */
         .timeline-container {
-            width: 100%;
+            width: 80%;
+            /* Take up most of container width but not all */
+            margin: 0 auto;
+            /* Center the timeline */
             text-align: center;
-            position: absolute;
-            bottom: -50px;
-            /* Adjust slider position */
         }
 
+        /* Timeline Header */
         .timeline-header {
             display: flex;
             justify-content: space-between;
-            width: 60%;
+            width: 100%;
             margin: 0 auto;
         }
 
+        /* Slider */
         #timeline {
-            width: 60%;
-            /* Make slider wider */
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        /* Marks Container */
+        .slider-marks {
+            position: relative;
+            width: 100%;
+            margin: 25px auto;
+            height: 30px;
+        }
+
+        /* Make sure the marks stay within bounds */
+        .mark-container {
+            position: absolute;
+            transform: translateX(-50%);
+        }
+
+        /* Adjust year labels to prevent overflow */
+        .mark-year {
+            font-size: 12px;
+            color: #4a5568;
+            transform: rotate(-45deg);
+            transform-origin: top left;
+            position: absolute;
+            top: 14px;
+            white-space: nowrap;
         }
 
         #year-display {
@@ -113,26 +145,75 @@
             font-weight: bold;
         }
 
-        .slider-marks {
-            position: relative;
-            width: 60%;
-            margin: 10px auto;
+        /* Individual Mark Styling */
+        .slider-mark {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
         }
 
-        .slider-mark {
-            width: 2px;
+        /* Mark Line */
+        .mark-line {
             height: 10px;
-            background-color: black;
+            background-color: #4a5568;
+            margin-bottom: 4px;
+            transition: height 0.2s ease;
+        }
+
+        /* Year Label */
+        .mark-year {
+            font-size: 12px;
+            color: #4a5568;
+            transform: rotate(-45deg);
+            transform-origin: top left;
             position: absolute;
-            top: -20px;
-            /* Adjust the position so it aligns with the slider */
+            top: 14px;
+            white-space: nowrap;
+        }
+
+        /* Hover Effects */
+        .mark-container:hover .mark-line {
+            height: 15px;
+            background-color: #2d3748;
+        }
+
+        .mark-container:hover .mark-year {
+            color: #2d3748;
+            font-weight: bold;
+        }
+
+        /* Active Mark */
+        .mark-container.active .mark-line {
+            height: 15px;
+            background-color: #2b6cb0;
+        }
+
+        .mark-container.active .mark-year {
+            color: #2b6cb0;
+            font-weight: bold;
+        }
+
+        #tituloPrincipal {
+            text-align: center;
+            margin: 20px 20vw;
+
+        }
+        .instrucciones{
+            opacity: 0.7;
+            text-align: center;
+            width: 200px;
+            font-style: italic;
+            font-size: 15px;
+            margin: 40px auto;
+            display: block;
         }
     </style>
 </head>
 
 <body>
+    <h1 id="tituloPrincipal">Pensadores de la educación a través del tiempo y la geografía</h1>
+        <p class="instrucciones">Desliza el control de tiempo y haz click en cada país para saber más</p>
     <div class="container">
         <div id="map"></div>
         <div class="timeline-container">
@@ -160,58 +241,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
     <script>
-        const theorists = {
-            'Colombia':{
-                name: 'Catalina Bravo',
-                birth: '19 de diciembre de 2001',
-                birthYear: 2001,
-                place: 'Popayán, Colombia',
-                img: 'profilePictures/bravo.webp',
-                lastName: 'bravo'
-            },
-            'Italy': {
-                name: 'Maria Montessori',
-                birth: '31 de agosto de 1870',
-                birthYear: 1870,
-                place: 'Chiaravalle, Italia',
-                img: 'profilePictures/montessori.webp',
-                lastName: 'montessori'
-            },
-            'Switzerland': {
-                name: 'Jean Piaget',
-                birth: '9 de agosto de 1896',
-                birthYear: 1896,
-                place: 'Neuchâtel, Suiza',
-                img: 'profilePictures/piaget.webp',
-                lastName: 'piaget'
-            },
-            'United States of America': {
-                name: 'Jerome Bruner',
-                birth: '1 de octubre de 1915',
-                birthYear: 1915,
-                place: 'Nueva York, Estados Unidos',
-                img: 'profilePictures/bruner.webp',
-                lastName: 'bruner'
-            },
-            'Belarus': {
-                name: 'Lev Vygotsky',
-                birth: '17 de noviembre de 1896',
-                birthYear: 1896,
-                place: 'Orsha, Imperio ruso (actual Bielorrusia)',
-                img: 'profilePictures/vygotsky.webp',
-                lastName: 'vygotsky'
-            },
-            'Brazil': {
-                name: 'Paulo Freire',
-                birth: '19 de septiembre de 1921',
-                birthYear: 1921,
-                place: 'Recife, Brasil',
-                img: 'profilePictures/freire.webp',
-                lastName: 'freire'
-            }
-        };
+        let theorists = {};
 
-        const theoristYears = Object.values(theorists).map(theorist => theorist.birthYear);
+        // Fetch theorists data from the external file
+        fetch("theorists.json")
+            .then(response => response.json())
+            .then(data => {
+                theorists = data;
+                const theoristYears = Object.values(theorists)
+                    .flat()  // Flatten the theorists arrays for each country
+                    .map(theorist => theorist.birthYear) // Map to birth years
+                    .filter(year => year !== "undefined") // Ensure valid years
+                    .sort((a, b) => a - b); // Sort the years
+
+                const minYear = Math.min(...theoristYears);
+                const maxYear = Math.max(...theoristYears);
+
+                // Update slider attributes dynamically
+                const timeline = document.getElementById("timeline");
+                timeline.min = minYear;
+                timeline.max = maxYear;
+                timeline.value = minYear;
+                document.getElementById("year-display").textContent = minYear;
+                // Initialize the map and slider marks after data is loaded
+                renderMap();
+                updateSliderMarks([...new Set(theoristYears)]);  // Ensure unique years for the slider
+            })
+            .catch(error => console.error('Error loading theorists:', error));
 
         // Create the map container
         const width = 960;
@@ -234,29 +290,93 @@
 
         const path = d3.geoPath().projection(projection);
 
+        function renderMap() {
+            // Fetch and render map data
+            d3.json("https://unpkg.com/world-atlas@2.0.2/countries-110m.json").then(worldData => {
+                const countries = topojson.feature(worldData, worldData.objects.countries).features;
+
+                g.selectAll("path")
+                    .data(countries)
+                    .enter()
+                    .append("path")
+                    .attr("class", "country")
+                    .attr("d", path)
+                    .classed("has-theorist", d => theorists[d.properties.name] ? true : false)
+                    .on("mouseover", showTooltip)
+                    .on("mouseout", hideTooltip)
+                    .on("click", function (event, d) {
+                        const countryName = d.properties.name;
+                        const theoristsForCountry = theorists[countryName];
+                        if (theoristsForCountry && theoristsForCountry.length > 0) {
+                            showTheoristInfo(theoristsForCountry);
+                        }
+                    });
+            });
+
+            // Zoom and rotation
+            const zoom = d3.zoom()
+                .scaleExtent([1, 8])
+                .on("zoom", (event) => {
+                    const scale = event.transform.k * 240; // Adjust scale based on zoom
+                    projection.scale(scale);
+                    g.selectAll("path").attr("d", path);  // Re-render the map
+                });
+
+            svg.call(zoom);
+
+            // Mouse dragging for rotation
+            let isDragging = false;
+            let previousX = 0;
+            let previousY = 0;
+
+            svg.on("mousedown", (event) => {
+                isDragging = true;
+                const [x0, y0] = d3.pointer(event);
+                previousX = x0;
+                previousY = y0;
+
+                svg.on("mousemove", (event) => {
+                    if (isDragging) {
+                        const [x1, y1] = d3.pointer(event);
+                        const dx = (x1 - previousX) * 0.5; // Adjust sensitivity
+                        const dy = (y1 - previousY) * 0.5; // Adjust sensitivity
+                        projection.rotate([projection.rotate()[0] + dx, projection.rotate()[1] - dy]);
+                        g.selectAll("path").attr("d", path);  // Re-render the map
+                        previousX = x1;
+                        previousY = y1;
+                    }
+                });
+            }).on("mouseup", () => {
+                isDragging = false;
+                svg.on("mousemove", null);
+            }).on("mouseleave", () => {
+                isDragging = false;
+                svg.on("mousemove", null);
+            });
+        }
+
         // Tooltip functionality
         function showTooltip(event, d) {
             const tooltip = d3.select("#tooltip");
             const countryName = d.properties.name;
-            const theorist = theorists[countryName];
+            const theoristsForCountry = theorists[countryName];
 
-            tooltip.style("display", "block")
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 10) + "px")
-                .html(theorist
-                    ? `<strong>${theorist.name}</strong><br>${theorist.birth}`
-                    : `<strong>${countryName}</strong>`);
+            if (theoristsForCountry && theoristsForCountry.length > 0) {
+                const theoristList = theoristsForCountry.map(t => `<strong>${t.name}</strong><br>${t.birth}`).join('<br><br>');
+                tooltip.style("display", "block")
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 10) + "px")
+                    .html(theoristList);
+            } else {
+                tooltip.style("display", "block")
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 10) + "px")
+                    .html(`<strong>${countryName}</strong>`);
+            }
         }
 
-        // Function to hide the tooltip
         function hideTooltip() {
             d3.select("#tooltip").style("display", "none");
-        }
-
-        // Function to rotate the globe
-        function rotateGlobe([x, y]) {
-            projection.rotate([x, y]);
-            g.selectAll("path").attr("d", path);  // Re-render the paths with new rotation
         }
 
         // Modal functionality
@@ -275,14 +395,17 @@
             }
         }
 
-        function showTheoristInfo(theorist) {
+        function showTheoristInfo(theoristsForCountry) {
             const theoristInfo = document.getElementById("theoristInfo");
-            theoristInfo.innerHTML = `
+
+            const theoristDetails = theoristsForCountry.map(theorist => `
                 <h2>${theorist.name}</h2>
                 <img src="${theorist.img}" alt="${theorist.name}" class="theorist-img">
                 <p><strong>Fecha de nacimiento:</strong> ${theorist.birth}</p>
                 <p><strong>Lugar de nacimiento:</strong> ${theorist.place}</p>
-            `;
+            `).join("<hr>");
+
+            theoristInfo.innerHTML = theoristDetails;
             modal.style.display = "block";
         }
 
@@ -290,84 +413,114 @@
             yearDisplay.textContent = year;
 
             d3.selectAll(".country").classed("active", false);
-            Object.entries(theorists).forEach(([country, theorist]) => {
-                if (theorist.birthYear === parseInt(year)) {
-                    d3.selectAll(".country")
-                        .filter(d => d.properties.name === country)
-                        .classed("active", true);
-                }
+
+            // Loop through all countries and their theorists
+            Object.entries(theorists).forEach(([country, theoristsList]) => {
+                theoristsList.forEach(theorist => {
+                    if (theorist.birthYear === parseInt(year)) {
+                        // Highlight the countries that have theorists from the selected year
+                        d3.selectAll(".country")
+                            .filter(d => d.properties.name === country)
+                            .classed("active", true);
+                    }
+                });
             });
         }
 
-        function rotateToCountry(countryName) {
+        function rotateToCountry(countryName, year) {  // Add year parameter
+            console.log(`Rotating to ${countryName}`);
+
+            // Find the theorist for this country and year
+            const theorist = theorists[countryName].find(t => t.birthYear === parseInt(year));
+
             d3.selectAll(".country")
                 .filter(d => d.properties.name === countryName)
                 .each(d => {
                     const centroid = d3.geoCentroid(d);
-                    projection.rotate([-centroid[0], -centroid[1]]); // Rotate to country
-                    g.selectAll("path").attr("d", path);  // Re-render map
+                    const currentRotation = projection.rotate();
+                    const targetRotation = [-centroid[0], -centroid[1]];
+
+                    const interpolator = d3.interpolate(currentRotation, targetRotation);
+
+                    // Hide any existing tooltip first
+                    d3.select("#tooltip").style("display", "none");
+
+                    const transition = d3.transition()
+                        .duration(1000)
+                        .ease(d3.easeCircleOut);
+
+                    transition.tween("rotate", () => {
+                        return (t) => {
+                            const newRotation = interpolator(t);
+                            projection.rotate(newRotation);
+                            g.selectAll("path").attr("d", path);
+
+                            // Show tooltip when rotation is complete
+                            if (theorist) {
+                                // Calculate position for tooltip based on projected centroid
+                                const projected = projection(centroid);
+
+                                d3.select("#tooltip")
+                                    .style("display", "block")
+                                    .style("left", `${projected[0] + 20}px`)  // Offset from point
+                                    .style("top", `${projected[1]}px`)
+                                    .html(`<strong>${theorist.name}</strong><br>${theorist.birth}`);
+                            }
+                        };
+                    });
                 });
         }
 
-        // Zoom and rotation
-        const zoom = d3.zoom()
-            .scaleExtent([1, 8])
-            .on("zoom", (event) => {
-                const scale = event.transform.k * 240; // Adjust scale based on zoom
-                projection.scale(scale);
-                g.selectAll("path").attr("d", path);  // Re-render the map
-            });
-
-        svg.call(zoom);
-
-        svg.on("mousedown", (event) => {
-            const [x0, y0] = d3.pointer(event);
-            svg.on("mousemove", (event) => {
-                const [x1, y1] = d3.pointer(event);
-                const dx = x1 - x0;
-                const dy = y1 - y0;
-                projection.rotate([dx, -dy]); // Rotate based on drag
-                g.selectAll("path").attr("d", path);  // Re-render the map
-            });
-        }).on("mouseup", () => svg.on("mousemove", null));
-
-        // Fetch and render map data
-        d3.json("https://unpkg.com/world-atlas@2.0.2/countries-110m.json").then(worldData => {
-            const countries = topojson.feature(worldData, worldData.objects.countries).features;
-
-            g.selectAll("path")
-                .data(countries)
-                .enter()
-                .append("path")
-                .attr("class", "country")
-                .attr("d", path)
-                .classed("has-theorist", d => theorists[d.properties.name] ? true : false)
-                .on("mouseover", showTooltip)
-                .on("mouseout", hideTooltip)
-                .on("click", function (event, d) {
-                    const countryName = d.properties.name;
-                    if (theorists[countryName]) {
-                        showTheoristInfo(theorists[countryName]);
-                    }
-                });
-        });
-
         // Update slider marks for years with theorist info
-        const sliderMarks = document.getElementById("slider-marks");
-        theoristYears.forEach(year => {
-            const mark = document.createElement("div");
-            mark.className = "slider-mark";
-            mark.style.left = `${((year - 1870) / (1921 - 1870)) * 100}%`;
-            sliderMarks.appendChild(mark);
-        });
+        function updateSliderMarks(theoristYears) {
+            const sliderMarks = document.getElementById("slider-marks");
+            sliderMarks.innerHTML = '';
+
+            // Get the actual range of the timeline slider
+            const minYear = parseInt(timeline.min);
+            const maxYear = parseInt(timeline.max);
+            const totalRange = maxYear - minYear;
+
+            theoristYears.forEach(year => {
+                const markContainer = document.createElement("div");
+                markContainer.className = "mark-container";
+                markContainer.setAttribute('data-year', year);
+
+                // Calculate position relative to the slider's range
+                const percentage = ((year - minYear) / totalRange) * 100;
+                markContainer.style.left = `${percentage}%`;
+
+                const mark = document.createElement("div");
+                mark.className = "slider-mark";
+                mark.innerHTML = `
+            <div class="mark-line"></div>
+            <span class="mark-year">${year}</span>
+        `;
+
+                markContainer.appendChild(mark);
+                sliderMarks.appendChild(markContainer);
+            });
+        }
 
         // Timeline change event listener
         timeline.addEventListener('input', function () {
-            updateMapHighlights(this.value);
             const year = parseInt(this.value);
-            const theoristForYear = Object.values(theorists).find(theorist => theorist.birthYear === year);
+
+            // Remove active class from all marks
+            document.querySelectorAll('.mark-container').forEach(mark => {
+                mark.classList.remove('active');
+            });
+
+            // Add active class to current year mark if it exists
+            const activeMark = document.querySelector(`.mark-container[data-year="${year}"]`);
+            if (activeMark) {
+                activeMark.classList.add('active');
+            }
+
+            updateMapHighlights(this.value);
+            const theoristForYear = Object.values(theorists).flat().find(theorist => theorist.birthYear === year);
             if (theoristForYear) {
-                rotateToCountry(theoristForYear.place.split(",")[1].trim());
+                rotateToCountry(theoristForYear.originalPlace.trim(), year);
             }
         });
     </script>
