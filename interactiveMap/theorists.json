@@ -61,22 +61,6 @@
 			"aportesPedagogia": "Aprendizaje activo, materiales manipulativos, educación sensorial"
         }
     ],
-    "Colombia": [
-        {
-			"originalPlace": "Colombia",
-            "name": "Catalina Bravo",
-            "birth": "19 de diciembre de 2001",
-            "birthYear": 2001,
-            "place": "Popayán, Colombia",
-            "img": "profilePictures/bravo.webp",
-            "lastName": "bravo",
-			"contextoHistorico": "Inicio del tercer milenio",
-			"obraPrincipal": "La educación bailada",
-			"educacionEpoca": "Un desórden impresionante",
-			"influencias": "Aventura, Jhonny Rivera",
-			"aportesPedagogia": "Incalculables"
-        }
-    ],
     "Switzerland": [
         {
 			"originalPlace": "Switzerland",
